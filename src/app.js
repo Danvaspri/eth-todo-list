@@ -52,7 +52,6 @@ App = {
       const todoList = await $.getJSON('TodoList.json')
       App.contracts.TodoList = TruffleContract(todoList)
       App.contracts.TodoList.setProvider(App.web3Provider)
-      App.contracts.TodoList.defaults({from:"0x5D04031acb7730E0BF7091a7b467dec34142B0FF"})
       // Hydrate the smart contract with values from the blockchain
       App.todoList = await App.contracts.TodoList.deployed()
 
@@ -111,17 +110,17 @@ App = {
     },
   
     createTask: async () => {
-        console.log("called")
+        
       App.setLoading(true)
       const content = $('#newTask').val()
-      await App.todoList.createTask(content)
+      await App.todoList.createTask(content,{from:App.account})
       window.location.reload()
     },
   
     toggleCompleted: async (e) => {
       App.setLoading(true)
       const taskId = e.target.name
-      await App.todoList.toggleCompleted(taskId)
+      await App.todoList.toggleCompleted(taskId,{from:App.account})
       window.location.reload()
     },
   
